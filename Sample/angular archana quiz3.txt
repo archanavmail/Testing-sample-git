@@ -1,0 +1,360 @@
+1. what are advantages of using IIFE? what does it do? Can we use like this?
+!function(){ /* code */ }();
+ and what is purpose?
+2.what does this return?
+
+function helperFunction(){
+  var i = 0;
+
+  return {
+    get: function(){
+      return i;
+    },
+    set: function( val ){
+      i = val;
+    }
+  };
+};
+
+var counter = helperFunction();
+counter.get();
+counter.set(3);
+
+3. What will this result be?
+function foo(){
+}();
+4.what are other methods we use for IIFE?
+5.what is $throttle and $debounce? give examples where is it used
+6.What is transclude option in angular JS?
+7. What are jQuery plugins and what is the advantage of using a plugin?interactions available in the jQuery UI library.
+8.What is the difference between event.stopPropagation and event.stopImmediatePropagation?
+9.What is the use of jQuery.data()?
+10.What is jQuery.holdReady() function?
+11.when will you use deferred and when will use callbacks?
+12.How is the deferred method in jquery important in relation to animate method?
+13.Explain what the following code will do?
+	$( "div#first, div.first, ol#items > [name$='first']" )
+14.How can you find out that an AJAX request has been completed?What Is the Format of an AJAX Request?What are the technologies used by Ajax?
+15.what are three methods used in the when retreiving data from other domains?
+16.What are methods available in ajax and http?
+17.What is Restangular?
+18.How to disable the back button in the browser?
+19.What is XMLHttpRequest?
+20.What is Asynchronous in Ajax?
+21.What is Angular Expression? How do you differentiate between Angular expressions and JavaScript expressions?
+22. What are the characteristics of ‘Scope’?
+23. What does SPA (Single Page Application) mean? How can we implement SPA with Angular?
+24.Explain $q service, deferred and promises.
+25.Explain the concept of digest cycle, watchers and dirty checking?
+26.How do we make HTTP get and post calls in Angular?
+27. Can u explain bind,apply and call?
+28. Explain the concept of factory,service and provider
+29. What kind of naming conventions is used for custom directives?
+30. Explain the concept of configuration and run 
+
+---------------------------------------------------------------------------------------------
+Answers:
+1. it unnecessarily takes up a name in the global namespace, increasing the possibility of name collisions. Second, the intentions of this code aren't 
+as self-documenting as an IIFE. And third, because it is named and isn't self-documenting it might accidentally be invoked more than once.
+IIFEs can also be used to enforce private variables and methods
+If you don't care about the return value, or the possibility of making your code slightly harder to read, you can save a byte by just prefixing
+the function with a unary operator.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+2.That will return the helperFunction as the whole.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+3. parse Error.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+4.using unary operator and use of new keyword.
+Here's another variation, from @kuvos - I'm not sure of the performance implications, if any, of using the `new` keyword, but it works.
+new function(){ /* code */ }
+new function(){ /* code */ }() // Only need parens if passing arguments
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+5. Passing a delay and callback to $.throttle returns a new function that will execute no more than once every delay milliseconds. Passing a delay and 
+callback to $.debounce returns a new function that will execute only once, coalescing multiple sequential calls into a single execution at either 
+the very beginning or end.
+Examples : $throttle is used when scrolling the screen
+$debounce is used when resizing the screen
+Throttling enforces a maximum number of times a function can be called over time. As in "execute this function at most once every 100 milliseconds."
+Debouncing enforces that a function not be called again until a certain amount of time has passed without it being called. As in "execute this 
+function only if 100 milliseconds have passed without it being called."
+Examples:
+
+    Wait until the user stops resizing the window
+    Don't fire an ajax event until the user stops typing
+    Measure the scroll position of the page and respond at most every 50ms
+    Ensure good performance as you drag elements around in an app
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+6.Transclusion is most often used for creating reusable widgets. A great example is a modal box or a
+navbar.Transclude allows us to pass in an entire template, including its scope, to a directive. Doing so gives
+us the opportunity to pass in arbitrary content and arbitrary scope to a directive. In order for scope
+to be passed in, the scope option must be isolated,{}, or set to true.If the scope option is not set,
+then the scope available inside the directive will be applied to the template passed in.
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+7.A plug-in is piece of code written in a standard JavaScript file. These files provide useful jQuery methods which can be used along with jQuery library methods. 
+jQuery plugins are quite useful as its piece of code which is already written by someone and re-usable, which saves your development time.
+• Draggable
+• Droppable
+• Resizable
+• Selectable
+• Sortable
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+8.event.stopPropagation() allows other handlers on the same element to be executed, while event.stopImmediatePropagation() 
+prevents every event from running. For example, see below jQuery code block:
+
+	$("p").click(function(event){
+  event.stopImmediatePropagation();
+	});
+	$("p").click(function(event){
+	  // This function won't be executed
+	  $(this).css("background-color", "#f00");
+	});
+
+If event.stopPropagation was used in previous example, then the next click event on p element 
+which changes the css will fire, but in case event.stopImmediatePropagation(), the next p click event will not fire.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+9.JQuery .data() is used to set/return arbitrary data to/from an element.
+Syntax: jQuery.data(element, key, value) where:
+– “element” is the DOM element to which the data is associated.
+– “key” is an arbitrary name of the piece of data.
+– “value” is value of the specified key.
+$("label:val1").text(jQuery.data(div, "item").val1);
+$("label:val2").text(jQuery.data(div, "item").val2);
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+10.By using jQuery.holdReady() function we can hold or release the execution of jQuery’s ready event.
+This method should be call before we run ready event.
+To delay the ready event, we have to call
+
+	Query.holdReady(true);
+
+When we want to release the ready event then we have to call
+view source
+print
+
+	jQuery.holdReady(false);
+
+This function is helpful when we want to load any jQuery plugins before the execution of ready event. For example:
+
+	$.holdReady(true);
+	$.getScript("xyzplugin.js", function()
+	{
+	     $.holdReady(false);
+	});
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+11. Both are used in asynchronous operations. Callback leads to callback hell and whereas deferred help us to read the code easily and understand it. 
+there are so many chain handlers to promise like .done,.then,.fail and .always
+----------------------------------------------------------------------------------------------------------------------------------------------------
+12.The .animate() method is used to create animations with other shorthands using it. The queue() method can be used to link together multiple
+ animation methods to create an unique effect. These methods are effective when all the data is available locally and all the methods are 
+ executed on as single system only. In case the user wants to use the animation methods on a data that resides on the server and wants to 
+ handle at a single go the user can make used of the .deferred method.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+13.This code performs a query to retrieve any <div> element with the id first, plus all <div> elements with the class first,
+ plus all elements which are children of the <ol id="items"> element and whose name attribute ends with the string “first”. 
+ This is an example of using multiple selectors at once. The function will return a jQuery object containing the results of the query.
+[name~=”value”]-Selects elements that have the specified attribute with a value containing a given word, delimited by spaces.
+[name*=”value”]-Selects elements that have the specified attribute with a value containing a given substring.
+ [name^=”value”]-Selects elements that have the specified attribute with a value beginning exactly with a given string.
+----------------------------------------------------------------------------------------------------------------------------------------------------
+14. We use the ReadyState property to check whether AJAX request has been completed. If the property is equal to four, 
+then the request has been completed and data is available.
+An AJAX request can be in any of the following formats:
+• Text File
+• HTML
+• JSON object
+AJAX uses following technologies:
+
+• JavaScript
+• XMLHttpRequest
+• Document Object Model (DOM)
+• Extensible HTML (XHTML)
+• Cascading Style Sheets (CSS)
+----------------------------------------------------------------------------------------------------------------------------------------------------
+15. proxy files,JSONP,CORS- cross origin resource sharing
+----------------------------------------------------------------------------------------------------------------------------------------------------
+16. $.load(),$.get(),$.post(),$.getScript(),$.getJSON(),$.ajax()
+$http,$get,$post,$head,$put,$delete,$jsonp,$patch
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+17.Restangular is an Angular service specifically designed simply to fetch data from the rest of the world. To use Restangular you need to link the restangular.js file
+ and include restangular resource as a dependency within your angular app
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+18.$(document).ready(function() {
+	     window.history.forward(1);
+	     //OR
+	     window.history.forward(-1);
+	});
+	
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+19.XMLHttpRequest is an API available to web browser scripting languages (i.e. JavaScript).
+It is used to send HTTP/HTTPS requests to a web server and load the server's response into the script.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+20.We can set the Asynchronous value as true OR false.
+Async=true
+Ajax request execute independently, Its response can come earlier than other request which is execute later .
+Async=true
+Ajax request does not execute independently, Its response can comes when earlier request finished. 
+<link rel="stylesheet" href="css/store.css"/>
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+
+21.Angular expressions are code snippets that are usually placed in binding such as {{ expression }} similar to JavaScript.
+
+The main differences between Angular expressions and JavaScript expressions are:
+Context : The expressions are evaluated against a scope object in Angular, while Javascript expressions are evaluated against the global window
+Forgiving: In Angular expression, the evaluation is forgiving to null and undefined whereas in JavaScript undefined properties generate TypeError or 
+ReferenceError
+No Control Flow Statements: We cannot use loops, conditionals or exceptions in an Angular expression
+Filters: In Angular unlike JavaScript, we can use filters to format data before displaying it
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+22. Scope acts as glue between the controller and the view. Scope are arranged in hierarchical structure which mimic the DOM structure of the application. Scope is used
+to evaluate the execution context of expressions. Scopes can watch expressions and propagate events. Characteristic of scope are
+    Scopes provide APIs ($watch) to observe model mutations.
+    Scopes provide APIs ($apply) to propagate any model changes through the system into the view from outside of the “Angular realm” 
+	(controllers, services, Angular event handlers).
+    Scopes can be nested to limit access to the properties of application components while providing access to shared model properties.
+	Nested scopes are either “child scopes” or “isolate scopes”. A “child scope” (prototypically) inherits properties from its parent scope.
+	An “isolate scope” does not. See isolated scopes for more information.
+    Scopes provide context against which expressions are evaluated. For example {{username}} expression is meaningless, 
+	unless it is evaluated against a specific scope which defines the username property.	
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+23.Single Page Applications (SPAs) are web apps that load a single HTML page and dynamically update that page as the user interacts with the app. 
+In an SPA the page never reloads, though parts of the page may refresh. This reduces the round trips to the server to a minimum.
+
+It’s a concept where we create a single shell page or master page and load the webpages inside that 
+master page instead of loading pages from the server by doing post backs. We can implement SPA with Angular using
+Angular routes. You can read up about SPAs here.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+24.Promises’ are post processing logics which are executed after some operation/action is completed whereas 
+‘deferred’ is used to control how and when those promise logics will execute.
+We can think about promises as “WHAT” we want to fire after an operation is completed while deferred controls “WHEN” 
+and “HOW” those promises will execute.“$q” is the angular service which provides promises and deferred functionality.
+Using promises, deferred and “q” service is a 4 step process:-
+
+    Step 1:- Get the “q” service injected from Angular.
+    Step 2 :- Get deferred object from “q” service object.
+    Step 3 :- Get Promise object from deferred object.
+    Step 4 :- Add logics to the promise object.
+
+// Step 1 :- Get the "q" service
+    function SomeClass($scope,$q) {
+
+// Step 2 :- get deferred  from "q" service
+        var defer = $q.defer();
+// step 3:-  get promise  from defer
+        var promise = defer.promise;
+// step 4 :- add success and failure logics to promise object
+promise.then(function () {
+            alert("Logic1 success");
+        }, function () {
+            alert("Logic 1 failure");
+        });
+
+promise.then(function () {
+            alert("Logic 2 success");
+        }, function () {
+            alert("Logic 2 failure");
+        });
+
+    }// This will execute success logics of promise 
+defer.resolve();
+// This will execute failure logics of promise
+defer.reject();
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+25.So summarizing definitions for the above three concepts:-
+    Digest cycle: - It is a simple loop which updates the model and view.
+    Watchers :- They are listeners which are attached to expression and angular directives and fire when the model data changes.
+    Dirty check :- This is a extra digest loop which runs to check any cascading left over updates due to the first digest cycle.
+	
+	There are lot of great open source tools which help you to figure out the number of watchers , one such tool is the “batarang” tool.
+	It’s a simple Google chrome extension which you can install separately.
+
+Below is a simple snapshot where in we ran the above program , pressed f12 , enabled batarang and below are the results. 
+You can see that he is showing 5 total watchers and for that digest cycle ran for 0.07 MS.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+26.“$http” service API needs atleast three things:-
+
+    First what is the kind of call “POST” or “GET”.
+    Second the resource URL on which the action should happen.
+    Third we need to define the “success” function which will be executed once we get the response from the server.
+$http({ method: "GET", url: "http://localhost:8438/SomeMethod"     }).success(function (data, status, headers, config)
+		{
+                   // Here goes code after success
+		}
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+27. Bind - explictly set the this value in the function, share the methods from other objects, function currying
+apply and call - both are use to set the this value
+apply- when we dono how many arguments are to be used. It uses its arguments as array to pass arguments.
+call - we know how many arguments are passed.--Borrowing Array methods,string methods -
+that's the difference between call and apply. Both can be called on functions, which they run in the context of the first argument.
+In call the subsequent arguments are passed in to the function as they are, while apply expects the second argument to be an array 
+that it unpacks as arguments for the called function. 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+28. Factory is a function which creates the objects with the properties and return the same object. we can inject the factory in the controllers,
+directives and make use of the object and its properties.This is the class function Hence, it can be instantiated in different controllers 
+when you are using it with constructor function.
+Service is constructor function which created using new keyword. you can add properties to using this and it will not return anything.
+When you pass the service into your controller, those properties on ‘this’ will now be available on that controller through your service.
+service is singleton object so when we want use share single object across the application for eg authenticated user details
+Provider is created using the .config  and it return using $get() and when we use module wise configuration of the service object before making it available.
+
+Difference between factory and service
+USage
+constructor and return
+“Factory” and “Service” are different ways of doing DI (Dependency injection) in angular. So when we define DI using “service” as shown in the code below. 
+This creates a new GLOBAL instance 
+When you define DI using a “factory” it does not create a instance. It just passes the method and later the consumer internally has
+ to make calls to the factory for object instances.
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+29.For angular custom directive the best practice is to follow camel casing and that also with atleast two letter’s. In camel case naming convention we start with a small letter, followed by a capital letter for every word.
+
+Some example of camel cases are “loopCounter” , “isValid” and so on.
+
+So when you register a custom directive it should be with camel case format as shown in the below code “companyCopyRight”.
+
+
+app.directive('companyCopyRight', function ()
+{
+return
+{
+        template: '@CopyRight questpond.com '
+ };
+});
+
+Later when this directive is consumed inside HTML before each capital letter of camel case we need to insert a “-“ as specified in the below code.
+
+
+<div company-copy-right></div>
+If you are making a one letter prefix like “copyright” it’s very much possible that tomorrow if HTML team creates a tag with the same name,
+it will clash with your custom directive. 
+That’s why angular team recommends camel case which inserts a “-“ in between to avoid further collision with future HTML tag’s. 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+30. Configuration:
+1.Angular executes blocks of configuration during the provider registration and configuration phases
+in the bootstrapping of the module. This phase is the only part of the Angular flow that may be
+modified before the app starts up.
+When writing configuration for a module, it’s important to note that there are only a few types of
+objects that we can inject into the .config() function: providers and constants. If we inject any old
+service into a .config() function, then we might accidentally instantiate one before we actually
+configure it.
+The by-product of this strict requirement for configurable services is that we can only inject custom
+services that are built with the provider() syntax and cannot inject other services
+The config() function takes a single argument: configFunction (function) The function that Angular executes on module load
+Run:
+Unlike the configuration blocks, run blocks are executed after the injector is created and are the first
+methods that are executed in any Angular app.
+Run blocks are theclosestthing in Angular to the mainmethod. The run block is code that is typically
+hard to unit test and is related to the general app.
+The run block is a great place to put event handlers that need to be executed at the root level for the application. For example, authentication handlers
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------

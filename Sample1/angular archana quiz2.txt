@@ -1,0 +1,106 @@
+1.How AngularJS handle the security?
+2.What is Global API?
+3.How directives are compiled?
+4.How to bootstrap your angular app for multiple modules?
+5.What is auto bootstrap process in AngularJS? / How AngularJS is initialized automatically?
+6.How do you reset a “$timeout”, and disable a “$watch()”?
+7.How does interpolation, e.g. “{{ someModel }}”, actually work?
+8.When to use the "factory" service of AngularJS? How about when to use "service" and "provider" service?
+9. Difference between compile,interpolate, parse
+10.What should be the maximum number of concurrent “watches”? Bonus: How would you keep an eye on that number?
+-----------------------------------------------------------------------------------------------------------------------
+Answers:
+1.>Use the latest version of angularJS- Updates and security patches
+> Do not mix client-side and server-side templates- this way one cannot inject html templates(HTML injection attacks
+)
+>Protection from XSRF is provided by using the double-submit cookie defense pattern
+>Protection from JSON Hijacking is provided if the server prefixes all JSON requests with following string ")]}',\n". 
+Angular will automatically strip the prefix before processing it as JSON. 
+>Strict Contextual Escaping (SCE) is a mode in which AngularJS requires bindings in certain contexts to require a 
+value that is marked as safe to use for that context.
+>Avoid caching data
+>Content security policy (CSP)
+>HTTPS and server side autentication and authorization.
+>Cross-Site-Scripting(CSS) attacks 
+----------------------------------------------------------------------------------------------------------------------
+2.Global API provides you global functions to perform common JavaScript tasks such as comparing objects, deep copying, 
+iterating through objects, and converting JSON data etc. All global functions can be accessed by using the angular object. 
+The list of global functions is given below: angular.lowercase,angular.uppercase,angular.forEach
+----------------------------------------------------------------------------------------------------------------------
+3. It is important to note that Angular operates on DOM nodes rather than strings. Usually, you don't notice this 
+because when an html page loads, the web browser parses HTML into the DOM automatically
+HTML compilation happens in three phases:
+    The $compile traverses the DOM and looks for directives. For each directive it finds, it adds it to a list of directives
+    Once the entire DOM has been traversed, it will sort that list of directives by their priority. Then, each 
+	directive’s own compile function is executed, giving each directive the chance to modify the DOM itself. 
+	Each compile function returns a linking function, which is then composed into a combined linking function and returned
+    $compile links the template with the scope by calling the combined linking function from the previous step.
+	This in turn will call the linking function of the individual directives, registering listeners on the elements and
+	setting up $watch with the scope as each directive is configured to do.
+---------------------------------------------------------------------------------------------------------------------------
+6.The key to both is assigning the result of the function to a variable.
+
+To cleanup the timeout, just “.cancel()” it:
+
+var customTimeout = $timeout(function () {
+  // arbitrary code
+}, 55);
+
+$timeout.cancel(customTimeout);
+
+The same applies to “$interval()”.
+
+To disable a watch, just call it.
+
+// .$watch() returns a deregistration function that we store to a variable
+var deregis = $rootScope.$watch(‘someGloballyAvailableProperty’, function (newVal) {
+  if (newVal) {
+    // we invoke that deregistration function, to disable the watch
+    deregis();
+    ...
+  }
+});
+
+.
+------------------------------------------------------------------------------------------------------------------------------------
+7.It relies on $interpolation, a service which is called by the compiler. It evaluates text and markup which may 
+contain AngularJS expressions. For every interpolated expression, a “watch()” is set. $interpolation returns a function, which has a single argument,
+ “context”. By calling that function and providing a scope as context, the expressions are “$parse()”d against that scope.
+ ---------------------------------------------------------------------------------------------------------------------------------------
+8. It is just a collection of functions like a class. Hence, it can be instantiated in different controllers when you are using it with constructor function
+It is a singleton object. Use it when you need to share a single object across the application. For example, authenticated user details
+ When you need to provide module-wise configuration for your service object before making it available
+-------------------------------------------------------------------------------------------------------------------------------------------
+9.Those are all examples of services that aid in AngularJS view rendering (although $parse and $interpolate could be 
+used outside of this domain). To illustrate what is the role of each service let's take example of this piece of HTML:
+
+var imgHtml = '<img ng-src="/path/{{name}}.{{extension}}">'
+
+and values on the scope:
+
+$scope.name = 'image';
+$scope.extension = 'jpg';
+
+Given this markup here is what each service brings to the table:
+
+    $compile - it can take the whole markup and turn it into a linking function that, when executed against a certain 
+	scope will turn a piece of HTML text into dynamic, live DOM with all the directives (here: ng-src) reacting to model 
+	changes. One would invoke it as follows: $compile(imgHtml)($scope) and would get a DOM element with all the DOM event 
+	bounds as a result. $compile is making use of $interpolate (among other things) to do its job.
+    $interpolate knows how to process a string with embedded interpolation expressions, ex.: /path/{{name}}.{{extension}}. 
+	In other words it can take a string with interpolation expressions, a scope and turn it into the resulting text. 
+	One can think of the $interpolation service as a very simple, string-based template language. 
+	Given the above example one would use this service like: $interpolate("/path/{{name}}.{{extension}}")($scope) to get
+	the path/image.jpg string as a result.
+    $parse is used by $interpolate to evaluate individual expressions (name, extension) against a scope. 
+	It can be used to both read and set values for a given expression. For example, to evaluate the name expression one 
+	would do: $parse('name')($scope) to get the "image" value. To set the value one would do: $parse('name').assign($scope, 'image2')
+
+All those services are working together to provide a live UI in AngularJS. But they operate on different levels:
+
+    $parse is concerned with individual expressions only (name, extension). It is a read-write service.
+    $interpolate is read only and is concerned with strings containing multiple expressions (/path/{{name}}.{{extension}})
+    $compile is at the heart of AngularJS machinery and can turn HTML strings (with directives and interpolation expressions) into live DOM.
+----------------------------------------------------------------------------------------------------------------------------------------
+10.To reduce memory consumption and improve performance it is a good idea to limit the number of watches on a page to 2,000.
+ A utility called ng-stats can help track your watch count and digest cycles.

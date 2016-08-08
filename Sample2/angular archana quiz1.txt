@@ -1,0 +1,28 @@
+1.what is function currying?
+2.What's the difference between .call and .apply?
+3.do we have prototyping inheritance in scope similar to javascript in angular js?
+4.What is Dependency Injection?
+5.How data binding works in Angular and what is "scope"?
+6.What is the difference between compile and link?
+7.What is $apply and $digest? How they are used in angular?
+8. what is TTL (time to loop) what is its default value?
+9. why use angular JS?
+10.What is the difference between eq() and get() methods in jQuery?
+11.What are the advantages of AngularJS?
+12.What is core module in AngularJS?
+13.How AngularJS handle the security?
+14.Explain .bind() vs .live() vs .delegate() vs .on()
+15.What are Modules in AngularJS?
+16.What is difference between config() and run() method in AngularJS?
+17.Difference between service,factory and provider
+18.What is Global API?
+19.Difference between querySelector and querySelectorall
+20.What are Filters and Expressions in Angular JS?How AngularJS expressions are different from the JavaScript expressions?
+21.What is restrict option in directive?
+22.What is the difference between $scope and scope in angular?
+23.How AngularJS is compiled? How directives are compiled?
+24.How AngularJS compilation is different from other JavaScript frameworks?
+25.Explain $watch,$watchgroup,$watchCollection
+
+
+
